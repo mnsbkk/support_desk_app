@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}New ticket{% endblock %}
+{% block content %}
+    <!-- Form used to submit a new support request. -->
+    <h1>New ticket</h1>
+
+    <form method="POST" action="{{ url_for('create_ticket') }}" class="ticket-form" novalidate>
+        <div class="form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required value="{{ form.get('name', '') }}">
+        </div>
+
+        <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required value="{{ form.get('email', '') }}">
+        </div>
+
+        <div class="form-row">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" required maxlength="120" value="{{ form.get('subject', '') }}">
+        </div>
+
+        <div class="form-row">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required maxlength="1000">{{ form.get('description', '') }}</textarea>
+            <small class="char-counter"><span id="char-count">0</span> / 1000</small>
+        </div>
+
+        <button type="submit" class="button">Submit</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Ticket #{{ ticket['id'] }}{% endblock %}
+{% block content %}
+    <!-- Single ticket detail page with edit access. -->
+    <div class="top-row">
+        <h1>Ticket #{{ ticket['id'] }}</h1>
+        <a class="button" href="{{ url_for('edit_ticket', ticket_id=ticket['id']) }}">Edit</a>
+    </div>
+
+    <div class="meta">
+        <p><strong>Subject:</strong> {{ ticket['subject'] }}</p>
+        <p><strong>Status:</strong> <span class="badge badge-{{ ticket['status']|lower|replace(' ', '-') }}">{{ ticket['status'] }}</span></p>
+       
+        <!--TODO: add the rest of the fields-->
+    </div>
+
+    <h2>Description</h2>
+    
+    <!--TODO: Add the description here -->
+    <p>description of the ticket</p>
+    <div class="actions">
+        <a class="button secondary" href="{{ url_for('list_tickets') }}">Back</a>
+    </div>
+{% endblock %}

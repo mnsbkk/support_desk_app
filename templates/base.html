@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SupportDesk{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Top navigation for the application shell. -->
+    <header class="topbar">
+        <div class="container nav">
+            <a href="{{ url_for('index') }}" class="brand">SupportDesk</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('list_tickets') }}">Tickets</a>
+                <a href="{{ url_for('create_ticket') }}">New ticket</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content area for page-specific templates. -->
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-list">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer with a simple app label. -->
+    <footer class="container footer">
+        © 2026 SupportDesk
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

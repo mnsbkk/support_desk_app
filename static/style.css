@@ -1,0 +1,238 @@
+/* Shared colors and spacing values used across the app. */
+/* Shared colors and spacing values used across the app. */
+:root {
+    --bg: #f5f5f4;
+    --panel: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --button: #111827;
+    --button-text: #ffffff;
+    --success: #166534;
+    --success-bg: #ecfdf5;
+    --error: #991b1b;
+    --error-bg: #fef2f2;
+    --warning: #92400e;
+    --warning-bg: #fffbeb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    /* Main page background color for the app shell. */
+    line-height: 1.5;
+}
+
+img, input, textarea, select, button { font: inherit; }
+
+a { color: var(--text); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.topbar {
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+}
+
+.brand {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.95rem;
+}
+
+main {
+    padding: 2rem 0 3rem;
+}
+
+h1, h2, h3 {
+    margin: 0 0 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+p {
+    margin: 0 0 1rem;
+}
+
+.top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+/* Reusable button styling used on landing and action pages. */
+.button {
+    border: 1px solid var(--button);
+}
+
+.button.secondary {
+    background: transparent;
+    color: var(--text);
+}
+
+/* Form layout for create/edit ticket pages. */
+.ticket-form {
+    max-width: 100%;
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 0.4rem;
+    background: var(--panel);
+    color: var(--text);
+}
+
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid rgba(17, 24, 39, 0.15);
+    outline-offset: 1px;
+}
+
+.char-counter {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.table {
+   /*TODO: Add table styling here */
+}
+
+th, td {
+    /* TODO: Add table cell styling here */
+}
+
+th {
+    /* TODO: Add table header styling here */
+}
+
+.meta {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta p {
+    margin: 0.2rem 0;
+}
+
+.description {
+    white-space: pre-wrap;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 1px;
+    font-size: 0.75rem;
+    border: 1px solid transparent;
+}
+
+.badge-open { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+.badge-in-progress { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+.badge-resolved { background: #dcfce7; color: #166534; border-color: #bbf7d0; }
+.badge-closed { background: #f3f4f6; color: #374151; border-color: #e5e7eb; }
+
+.flash-list {
+    margin-bottom: 1rem;
+}
+
+.flash {
+    padding: 0.75rem 1rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--line);
+    margin-bottom: 0.5rem;
+}
+
+.flash.success {
+    background: var(--success-bg);
+    border-color: #a7f3d0;
+    color: var(--success);
+}
+
+.flash.error {
+    background: var(--error-bg);
+    border-color: #fecaca;
+    color: var(--error);
+}
+
+.footer {
+    padding: 0 0 2rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.invalid {
+    border-color: #dc2626;
+}
+
+/* Small-screen layout adjustments. */
+/* Small-screen layout adjustments. */
+@media (max-width: 640px) {
+    .nav,
+    .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        gap: 0.75rem;
+    }
+}

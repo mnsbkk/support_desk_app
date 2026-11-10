@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Tickets{% endblock %}
+{% block content %}
+    <!-- Ticket list page with a quick create action. -->
+    <div class="top-row">
+        <h1>Tickets</h1>
+        <a class="button" href="{{ url_for('create_ticket') }}">New ticket</a>
+    </div>
+
+    {% if tickets %}
+        <!-- Table of all submitted support requests. -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tickets %}
+                    <tr>
+                    
+                        <!--TODO: Add the rest of the fields -->
+                        <td>id</td>
+                        <td>subject</td>
+                        <td>name</td>
+
+
+                        <td><span class="badge badge-{{ t['status']|lower|replace(' ', '-') }}">{{ t['status'] }}</span></td>
+                        <td><a href="{{ url_for('detail_ticket', ticket_id=t['id']) }}">View</a></td>
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tickets yet. <a href="{{ url_for('create_ticket') }}">Create one</a>.</p>
+    {% endif %}
+{% endblock %}
