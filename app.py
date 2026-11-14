@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, g
+import re
 
 app = Flask(__name__)
 app.secret_key = "dev-secret-key-change-in-production"
@@ -9,6 +10,47 @@ app.secret_key = "dev-secret-key-change-in-production"
 DATABASE = "tickets.db"
 STATUS_OPTIONS = ["Open", "In Progress", "Resolved", "Closed"]
 
+def validate_ticket_form(form, *, editing=False):
+    errors = {}
+
+    required_messages = {
+        "name": "Name is required. Enter your name.",
+        "email": (
+            "Email is required. Enter an email address, "
+            "for example alex@example.com."
+        ),
+        "subject": "Subject is required. Enter a short summary of the problem.",
+        "description": (
+            "Description is required. Enter details about the problem."
+        ),
+    }
+
+    for field, message in required_messages.items():
+        if not form.get(field, "").strip():
+            errors[field] = message
+
+    email = form.get("email", "").strip()
+
+    if email and not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", email):
+        errors["email"] = (
+            "Enter an email address with a name, @ symbol, and domain, "
+            "for example alex@example.com."
+        )
+
+    for field, limit in {"subject": 120, "description": 1000}.items():
+        value = form.get(field, "")
+        length = len(value.encode("utf-16-le")) // 2
+
+        if length > limit:
+            errors[field] = (
+                f"{field.capitalize()} must be {limit} characters or fewer. "
+                "Shorten your text."
+            )
+
+    if editing and form.get("status", "") not in STATUS_OPTIONS:
+        errors["status"] = "Choose a status from the list."
+
+    return errors
 
 # Keep a single SQLite connection per request.
 def get_db():
@@ -69,12 +111,14 @@ def create_ticket():
         subject = request.form.get("subject", "").strip()
         description = request.form.get("description", "").strip()
 
-        if not all([name, email, subject, description]):
-            flash("All fields are required.", "error")
+        errors = validate_ticket_form(request.form)
+
+        if errors:
             return render_template(
                 "create.html",
                 form=request.form,
-            )
+                errors=errors,
+            ), 422
 
         now = datetime.utcnow().isoformat(timespec="seconds")
         db = get_db()
@@ -87,7 +131,7 @@ def create_ticket():
         flash("Ticket submitted successfully!", "success")
         return redirect(url_for("detail_ticket", ticket_id=cur.lastrowid))
 
-    return render_template("create.html", form={})
+    return render_template("create.html", form={}, errors={})
 
 
 @app.route("/tickets/<int:ticket_id>")
@@ -119,14 +163,16 @@ def edit_ticket(ticket_id):
         description = request.form.get("description", "").strip()
         status = request.form.get("status", "Open")
 
-        if not all([name, email, subject, description]) or status not in STATUS_OPTIONS:
-            flash("All fields are required and status must be valid.", "error")
+        errors = validate_ticket_form(request.form, editing=True)
+
+        if errors:
             return render_template(
                 "edit.html",
                 ticket=ticket,
                 form=request.form,
                 status_options=STATUS_OPTIONS,
-            )
+                errors=errors,
+            ), 422
 
         now = datetime.utcnow().isoformat(timespec="seconds")
         db.execute(
@@ -144,7 +190,8 @@ def edit_ticket(ticket_id):
         ticket=ticket,
         form=ticket,
         status_options=STATUS_OPTIONS,
-    )
+        errors={},
+        )
 
 
 if __name__ == "__main__":

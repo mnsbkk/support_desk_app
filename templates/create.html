@@ -5,25 +5,89 @@
     <h1>New ticket</h1>
 
     <form method="POST" action="{{ url_for('create_ticket') }}" class="ticket-form" novalidate>
+        <p class="required-note">(* indicates required field)</p>
+
         <div class="form-row">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required value="{{ form.get('name', '') }}">
+            <label for="name">
+                Name <span class="required-marker" aria-hidden="true">*</span>
+            </label>
+
+            <input type="text" id="name" name="name" required autocomplete="name"
+           value="{{ form['name']|default('') }}" aria-describedby="name-error"
+           aria-invalid="{{ 'true' if errors.get('name') else 'false' }}">
+
+            <p id="name-error" class="field-error"
+            {% if not errors.get('name') %}hidden{% endif %}>
+            {{ errors.get('name', '') }}
+            </p>
+        </div>
+        
+        <div class="form-row">
+            <label for="email">
+                Email <span class="required-marker" aria-hidden="true">*</span>
+            </label>
+
+            <p id="email-hint" class="field-hint">
+                Enter an email address, for example alex@example.com.
+            </p>
+            <input type="email" id="email" name="email" required
+           autocomplete="email" value="{{ form['email']|default('') }}"
+           aria-describedby="email-hint email-error"
+           aria-invalid="{{ 'true' if errors.get('email') else 'false' }}">
+
+            <p id="email-error" class="field-error"
+            {% if not errors.get('email') %}hidden{% endif %}>
+            {{ errors.get('email', '') }}
+            </p>
         </div>
 
         <div class="form-row">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required value="{{ form.get('email', '') }}">
+            <label for="subject">
+                Subject <span class="required-marker" aria-hidden="true">*</span>
+            </label>
+
+            <p id="subject-hint" class="field-hint">
+                Maximum 120 characters.
+            </p>
+
+            <input type="text" id="subject" name="subject" required maxlength="120"
+            value="{{ form['subject']|default('') }}"
+            aria-describedby="subject-hint subject-counter subject-error"
+            aria-invalid="{{ 'true' if errors.get('subject') else 'false' }}"
+            data-character-counter="subject-counter">
+
+            <p id="subject-counter" class="char-counter"></p>
+
+            <p id="subject-error" class="field-error"
+            {% if not errors.get('subject') %}hidden{% endif %}>
+            {{ errors.get('subject', '') }}
+            </p>
+
+           <output id="subject-announcement" for="subject"
+        class="visually-hidden" aria-live="polite" aria-atomic="true"></output>
         </div>
 
         <div class="form-row">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" required maxlength="120" value="{{ form.get('subject', '') }}">
-        </div>
+            <label for="description">
+                Description <span class="required-marker" aria-hidden="true">*</span>
+            </label>
 
-        <div class="form-row">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" required maxlength="1000">{{ form.get('description', '') }}</textarea>
-            <small class="char-counter"><span id="char-count">0</span> / 1000</small>
+            <p id="description-hint" class="field-hint">
+                Maximum 1000 characters.
+            </p>
+
+            <textarea id="description" name="description" required maxlength="1000" aria-describedby="description-hint description-counter description-error"
+              aria-invalid="{{ 'true' if errors.get('description') else 'false' }}"
+              data-character-counter="description-counter">{{ form['description']|default('') }}</textarea>
+
+            <p id="description-counter" class="char-counter"></p>
+
+            <p id="description-error" class="field-error"
+                {% if not errors.get('description') %}hidden{% endif %}>
+                {{ errors.get('description', '') }}
+            </p>
+
+            <output id="description-announcement" for="description" class="visually-hidden" aria-live="polite" aria-atomic="true"></output>
         </div>
 
         <button type="submit" class="button">Submit</button>
