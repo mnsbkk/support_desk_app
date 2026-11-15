@@ -21,6 +21,7 @@
 
     <!-- Main content area for page-specific templates. -->
     <main class="container">
+        <div id="flash-announcement" class="visually-hidden" role="status" aria-atomic="true"></div>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flash-list">

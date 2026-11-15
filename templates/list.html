@@ -9,33 +9,39 @@
 
     {% if tickets %}
         <!-- Table of all submitted support requests. -->
+    <p id="ticket-table-help" class="table-help">
+    On smaller screens, scroll sideways to see all columns.
+    </p>
+    <div class="table-wrapper" role="region" aria-label="Tickets"
+     aria-describedby="ticket-table-help" tabindex="0">
         <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Subject</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for t in tickets %}
+                <thead>
                     <tr>
-                    
-                        <!--TODO: Add the rest of the fields -->
-                        <td>id</td>
-                        <td>subject</td>
-                        <td>name</td>
-
-
-                        <td><span class="badge badge-{{ t['status']|lower|replace(' ', '-') }}">{{ t['status'] }}</span></td>
-                        <td><a href="{{ url_for('detail_ticket', ticket_id=t['id']) }}">View</a></td>
-                        
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for t in tickets %}
+                        <tr>
+                            <td>{{ t['id'] }}</td>
+                            <td>{{ t['name'] }}</td>
+                            <td>{{ t['email'] }}</td>
+                            <td>{{ t['subject'] }}</td>
+                            <td>{{ t['description'] }}</td>
+                            <td><span class="badge badge-{{ t['status']|lower|replace(' ', '-') }}">{{ t['status'] }}</span></td>
+                            <td><a href="{{ url_for('detail_ticket', ticket_id=t['id']) }}">View</a></td>
+                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>No tickets yet. <a href="{{ url_for('create_ticket') }}">Create one</a>.</p>
     {% endif %}
